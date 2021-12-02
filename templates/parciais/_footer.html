@@ -1,0 +1,129 @@
+{% load static %}
+
+
+	<!-- Social links. @TODO: replace by link/instructions in template -->
+	<section id="social">
+		<div class="container">
+			<div class="wrapper clearfix">
+				<!-- AddThis Button BEGIN -->
+				<div class="addthis_toolbox addthis_default_style">
+				<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+				<a class="addthis_button_tweet"></a>
+				<a class="addthis_button_linkedin_counter"></a>
+				<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+				</div>
+				<!-- AddThis Button END -->
+			</div>
+		</div>
+	</section>
+	<!-- /social links -->
+
+
+	<footer id="footer" class="top-space">
+
+		<div class="footer-area footer-bg">
+			<div class="container">
+				<div class="row">
+					
+					<div class="col-md-3 widget">
+						
+						<div class="widget-body">
+							<br>
+							<img src="{% static 'img/principal/jack.jpg' %}" height="230" width="350"alt=""></a>
+							
+						</div>
+						<br>
+					</div>
+
+					<div class="col-md-3 widget">
+					
+						<div class="widget-body">
+							
+						</div>
+					</div>
+
+					<div class="col-md-6 widget">
+						
+						<div class="widget-body">
+							<br>
+							<a href="{% url 'blog_index' %}"><img src="{% static 'img/logo/logo1.png' %}" alt=""></a>
+							
+						</div>
+						<br>
+					</div>
+
+				</div> <!-- /row of widgets -->
+			</div>
+		</div>
+
+		<div class="footer-bottom">
+			<div class="row d-flex align-items-center">
+				<div class="col-lg-12">
+					<div class="footer-copy-right text-center">
+						<p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | <i class="fas fa-skull-crossbones"></i>  Yuri M Menezes</p> 
+										
+						{% if user.is_authenticated %}
+														
+						<a href="#">Usuario Logado: {{user.username}}</a></li>          
+				  
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</footer>	
+		
+
+
+
+<!-- Scroll Up -->
+<div id="back-top" >
+    <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
+</div>
+
+    <!-- JS here --> 
+
+    <!-- JS da cabeira laranjada do footer --> 
+	
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    
+
+    <script type="text/javascript" src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
+
+    <!-- Jquery, Popper, Bootstrap -->
+ 
+    <script type="text/javascript" src="{% static 'js/vendor/jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- Jquery Mobile Menu -->
+    
+    <script type="text/javascript" src="{% static 'js/jquery.slicknav.min.js' %}"></script>
+
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    
+    <script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/slick.min.js' %}"></script>
+    <!-- One Page, Animated-HeadLin -->
+    
+    <script type="text/javascript" src="{% static 'js/wow.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/animated.headline.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.magnific-popup.js' %}"></script>
+
+    <!-- Nice-select, sticky -->
+
+    <script type="text/javascript" src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.sticky.js' %}"></script>
+    
+    <!-- contact js -->
+   
+    <script type="text/javascript" src="{% static 'js/contact.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.form.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.validate.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/mail-script.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
+    
+    <!-- Jquery Plugins, main Jquery -->	
+    
+    <script type="text/javascript" src="{% static 'js/plugins.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>

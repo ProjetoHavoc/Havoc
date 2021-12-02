@@ -1,0 +1,133 @@
+
+criando ambiente virtual
+
+#  python -m venv env
+
+ativando ambiente virtual
+
+#.\env\Scripts\activate.ps1
+
+se der algum erro na hora de ativar 
+no power shell como administrado usar o comando
+
+PS C:\Windows\system32> Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+
+# deactivate pra desabilitar o ambiente virtual
+
+
+pronto ... podemos começar a instalar as coisas
+
+se tiver um arquivo requerimentos.txt 
+
+$ pip install -r requirements.txt
+
+se nao instalaremos manualmente
+
+pip install django
+
+python.exe -m pip install --upgrade pip
+
+
+pip install wheel
+pip install pillow
+pip install django-crispy-forms
+pip install bootstrap4
+pip install django-summernote
+pip install django-axes
+pip install requests
+pip install mysqlclient
+
+ --- instal tudo de uma vez ---- pip install django wheel pillow django-crispy-forms bootstrap4 django-summernote mysqlclient requests django-axes
+
+ ---comando para gerar o requirements.txt    pip freeze > requirements.txt
+
+
+
+
+#############################
+
+
+colar as linhas abaixo no settings.py do raiz
+linhas referentes as configurações dos apps
+
+######################################################################################
+######################################################################################
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.2/howto/static-files/
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'templates/static'),)
+STATIC_ROOT = os.path.join('static')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+#fazendo configuraçao do summernote
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+SUMMERNOTE_THEME = 'bs4' # Use Bootstrap4 theme no summernote
+
+#definindo bootstrap4 como padra pro crispy
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# fazendo a parte de segurança do axes funcional
+AUTHENTICATION_BACKENDS = [
+    #AxesBackend deve ser o primeiro back-end na lista AUTHENTICATION_BACKENDS.
+
+    'axes.backends.AxesBackend',
+
+    # Django ModelBackend é o backend de autenticação padrão.
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# configuração do axes
+AXES_ENABLED = True #dizendo que o axes esta ativo
+AXES_FAILURE_LIMIT = 5 # numero de tentativas antes de bloquear o usuario
+AXES_ONLY_USER_FAILURES = True # bloqeando apenas o usuario que errou o login
+#AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True # bloqueia nome de usuário e endereço IP.
+AXES_LOCKOUT_CALLABLE = "administracao.views.erro403"
+
+
+from django.contrib.messages import constants
+
+MESSAGE_TAGS = {
+        constants.ERROR: 'alert-danger',
+        constants.WARNING: 'alert-warning',
+        constants.DEBUG: 'alert-info',
+        constants.SUCCESS: 'alert-success',
+        constants.INFO: 'alert-info',
+}
+
+
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'
+
+######################################################################################
+######################################################################################
+
+
+em middware clocar essa linha abaixo de todas as outras
+
+'axes.middleware.AxesMiddleware',
+
+para resetar a segurança de senha use um dos comandos abaixo
+
+python manage.py axes_reset
+
+python manage.py axes_reset_ip [ip ...]
+python manage.py axes_reset_username [username ...]
+python manage.py axes_reset_logs (age)
+
+
+
+comandos basicos Django
+
+$  python manage.py check
+$  python manage.py runserver
+$  python manage.py makemigrations
+$  python manage.py migrate
+$  python manage.py createsuperuser
+
+

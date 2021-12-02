@@ -1,0 +1,160 @@
+ instalando o git
+https://git-scm.com/downloads
+
+instalar o git 
+
+apt-get install git
+
+com o git bash aberto digitar  
+
+git config --global user.name "yurymenezes"
+
+git config --global user.email "yurymenezes@hotmail.com"
+
+clear para limpar a tela 
+
+git version  para ver a versao instalado do git
+
+para ver o editor padrao do git
+
+git config core.editor
+
+para ver o usuario do git 
+
+git config user.name
+
+para ver o email do git
+
+git config user.email
+
+para mudar o editor do git
+
+git config --global core.edito "caminho para o editor" 
+
+
+com o editor aberto 
+
+para iniciar o projeto git
+
+git init 
+
+para ver como esta o repositorio local do git
+
+para criar arquivos
+
+toch exemplo.txt
+
+git status 
+
+para adicionar todos arquivo ao container
+
+git add *
+
+
+para fazer o commit
+
+git comitt -m "comentario"
+
+informa~çoes
+
+para abrir o editor
+
+code .
+
+git log --online
+
+
+
+
+
+
+git log
+
+ git remote add origin https://github.com/yurymenezes/projetoprometheus.git
+
+ git remote set-url origin # + url do projeto para mudar 
+
+git push -u origin main # para subir o projeto
+
+--------------------
+
+iniciando projeto
+
+criar pasta
+
+ git clone https://github.com/yurymenezes/django-pro.git
+
+entrar na pasta
+
+cd nome da pasta
+
+criar ambiente virtual
+
+ python venv env 
+
+ativar ambiente virtual
+
+.\env\Scripts\activate.ps1   
+
+entrar na pasta 
+
+cd nome da pasta
+
+instalar requiriments.txt
+
+ pip install -r requirements.txt 
+
+python manage.py makemigrations
+
+python manage.py migrate  
+
+python manage.py runserver 
+
+para mandar o projetp 
+
+git add * 
+
+ git commit -m "teste"
+
+
+
+ git push -u origin master
+
+
+quanto o pull der problema executar o seguinte 
+
+git stash
+git stash drop
+git pull
+
+
+alterando arquivo do nginx
+
+nano /etc/nginx/nginx.conf
+
+
+mudar a linha abaixo para aumentar o tamnho da imagem que pode ser enviada para o servidor
+
+client_max_body_size 100M;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

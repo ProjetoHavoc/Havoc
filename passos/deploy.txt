@@ -1,0 +1,270 @@
+
+######################################################################################################
+			Maria db
+######################################################################################################
+
+
+deixe o sistema atualizado
+ 
+#sudo apt -y update
+
+#sudo apt -y upgrade
+
+agora usaremos o seguinte comando para instalar o mariadb
+
+#sudo apt install mariadb-server mariadb-client
+
+Agora execute o script seguro para definir a senha do root,
+ remova o banco de dados de teste e desabilite o login do usuário root remoto.
+
+$ sudo mysql_secure_installation
+
+tecle enter pra tudo e na hora que aparecer nova senha digite a senha que vc deseja para o banco de dados...
+ é importante que lembre dessa senha pois a usaremos mais tarde.
+
+agora vamos acessar o banco de dados com o comando
+
+mysql -u root -p -h localhost -P 3306
+
+para mostrar os bancos de dados 
+
+mysql>show databases; 
+
+para criar um novo banco de dados
+
+mysql>create database djangoDB character set utf8 collate utf8_bin;
+
+criando o usuario e a senha para o banco de dados
+
+entre aspas troque o password por sua senha
+
+mysql> create user yurim@localhost identified by 'C9p513'; 
+
+liberando todos as permissoes para seu usuario nesse banco de dados
+
+mysql> grant all privileges on djangoDB.* to yurim@localhost;
+
+>GRANT ALL ON *.* to root@'%' IDENTIFIED BY 'C9p513';
+
+>FLUSH PRIVILEGES;
+
+trocar a senha do maria db 
+
+>SET PASSWORD FOR 'root'@'localhost' = PASSWORD('nova-senha');
+>FLUSH PRIVILEGES;
+
+
+pronto terminanmos agora vamos usar o seguinte comando para sair 
+
+mysql> quit; 
+
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+
+colocar no arquivo a seguinte linha
+
+bind-address             = 0.0.0.0
+
+systemctl restart mariadb
+
+
+########################################################################################################
+				Deploy
+########################################################################################################
+
+deploy passo a passo
+
+coletar os arquivos staticos antes do deploy
+
+#python manage.py collectstatic
+
+preparando o servidor
+
+logo apos logar no servidor via ssh e preparar o ambiente
+
+# Instalando
+
+sudo apt install python3-pip python3.9 python3.9-dev python3.9-venv gcc default-libmysqlclient-dev libssl-dev nginx curl
+
+# Atualizando pip e demais
+
+python3.9 -m pip install --upgrade pip setuptools wheel --user
+export PATH="/home/$USER/.local/bin:$PATH"
+python3.9 -m pip install pipenv --user
+
+# Criar pasta
+mkdir projeto
+# Entrar na pasta
+cd projeto
+
+# Criando o ambiente virtual
+
+python3.9 -m venv env
+source env/bin/activate
+
+python3.9 -m pip install django gunicorn pillow
+
+se tiver um arquivo requerimentos.txt 
+
+$ pip install -r requirements.txt
+
+se nao instalaremos manualmente
+
+
+pip install django
+
+pip install wheel
+pip install pillow
+pip install django-crispy-forms
+pip install bootstrap4
+pip install django-summernote
+pip install django-axes
+pip install requests
+pip install mysqlclient
+
+pip install django wheel pillow django-crispy-forms bootstrap4 django-summernote mysqlclient requests django-axes
+
+pip freeze > requirements.txt  ---comando para gerar o requirements.txt
+
+
+
+
+####################################################################################################################
+			iniciando a configuração dos arquivos
+#####################################################################################################################
+
+
+
+## https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-18-04
+
+# Criando o arquivo
+
+sudo nano /etc/systemd/system/gunicorn.socket
+
+##################################################
+
+# COLAR (SEM EDIÇÃO)
+[Unit]
+Description=gunicorn socket
+
+[Socket]
+ListenStream=/run/gunicorn.sock
+
+[Install]
+WantedBy=sockets.target
+##################################################
+
+
+
+
+# Criando outro arquivo
+sudo nano /etc/systemd/system/gunicorn.service
+##################################################
+
+# Editar, depois Colar
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=yurim
+Group=www-data
+WorkingDirectory=/home/yurim/projeto/raiz
+ExecStart=/home/yurim/projeto/env/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          agenda.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+##################################################
+
+
+# Ativando
+sudo systemctl start gunicorn.socket
+sudo systemctl enable gunicorn.socket
+
+##################################################
+
+
+
+
+
+# Checando
+sudo systemctl status gunicorn.socket
+sudo systemctl status gunicorn
+curl --unix-socket /run/gunicorn.sock localhost
+sudo systemctl status gunicorn
+##################################################
+
+
+
+sudo systemctl restart nginx
+sudo systemctl restart gunicorn
+
+
+
+
+sudo nano /etc/nginx/sites-enabled/sitedjango
+##################################################
+
+
+
+
+# Configurando o nginx server block
+server {
+    listen 80;
+    server_name localhost;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    
+    location /static/ {
+        root /home/yurim/projeto/raiz;
+    }
+
+    location /media {
+        alias /home/yurim/projeto/raiz/media/;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+
+##################################################
+
+sudo rm /etc/nginx/sites-enabled/default
+sudo systemctl restart nginx
+sudo systemctl restart gunicorn
+##################################################
+
+
+deixando o servidor seguro
+
+instalar o seguintes apps
+
+sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+sudo apt-get install certbot
+sudo service nginx stop
+sudo certbot certonly --standalone -d projetoprometheus.com.br
+sudo service nginx start
+
+###### colocar isso no settings.py
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+
+
+
+
+para resetar a segurança de senha use um dos comandos abaixo
+
+python manage.py axes_reset
+
+python manage.py axes_reset_ip [ip ...]
+python manage.py axes_reset_username [username ...]
+python manage.py axes_reset_logs (age)

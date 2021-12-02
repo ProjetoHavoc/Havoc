@@ -1,0 +1,142 @@
+primeiros passos após a instalação do Debian 11
+
+Após a instalação do Debian 11 Bullseye em uma infraestrutura virtualizada ou em uma máquina física,
+você notará que os repositórios APT não estão configurados corretamente. 
+Neste guia, mostraremos como adicionar repositórios oficiais Bullseye do Debian 11 ao sources.list.
+
+A sources.list é a lista de endereços em que são distribuídos os programas
+da distribuição Debian para você instalar no seu computador.
+
+vamos começar!
+
+primeiramente criaremos um backup do arquivo original com o comando
+
+# mv /etc/apt/sources.list /etc/apt/sources.list.old
+
+Agora iremos criar um novo arquivo 
+
+# nano /etc/apt/sources.list
+
+vai aparecer uma tela vazia neste ponto iremos copiar o 
+texto abaixo e colar no arquivo que acabamos de criar:
+
+deb http://deb.debian.org/debian/ bullseye main non-free contrib
+# deb-src http://deb.debian.org/debian/ bullseye main non-free contrib
+
+deb http://security.debian.org/debian-security bullseye-security/updates main contrib non-free
+# deb-src http://security.debian.org/debian-security bullseye/updates main contrib non-free
+
+# bullseye-updates, previously known as ‘volatile’
+deb http://deb.debian.org/debian/ bullseye-updates main contrib non-free
+# deb-src http://deb.debian.org/debian/ bullseye-updates main contrib non-free
+
+# bullseye-backports, previously on backports.debian.org
+deb http://deb.debian.org/debian/ bullseye-backports main contrib non-free
+# deb-src http://deb.debian.org/debian/ bullseye-backports main contrib non-free
+
+pressione CTRL + O para salvar as alterações e CTRL + X para fechá-las.
+
+apt-get update e apt-get upgrade
+
+pronto finalizamos a atualização do sources.list
+
+
+Instalação e configuração do Sudo no Debian 11
+
+como administrador no terminal use o comando a segui para instalar o sudo dos repositórios da Debian.
+ O Sudo é bastante leve, por isso a instalação é bastante rápida.
+
+#apt-get install sudo
+
+Agora temos que modificar o arquivo /etc/sudoers que é onde toda a configuração do sudo está localizada.
+
+#nano /etc/sudoers
+
+abaixo da linha root ALL=(ALL:ALL) ALL coloque seu usuario
+
+ex:
+
+root ALL=(ALL:ALL) ALL
+seu-usuario ALL=(ALL:ALL) ALL
+
+pressione CTRL + O para salvar as alterações e CTRL + X para fechá-las.
+
+Pronto! podemos usar o sudo tranquilamente.
+
+
+Instale o servidor Apache HTTP no Debian 11.
+
+Para instalar o servidor Apache HTTP no Debian 11;
+
+Executar atualização do sistema
+Certifique-se de que o cache do pacote do sistema está atualizado executando os comandos abaixo;
+
+#apt update
+#apt upgrade
+
+ a instalação pode ser feita facilmente rodando o comando abaixo;
+
+#apt install apache2
+
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  apache2-bin apache2-data apache2-utils libapr1 libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap libcurl4 liblua5.3-0 ssl-cert
+Suggested packages:
+  apache2-doc apache2-suexec-pristine | apache2-suexec-custom www-browser
+The following NEW packages will be installed:
+  apache2 apache2-bin apache2-data apache2-utils libapr1 libaprutil1 libaprutil1-dbd-sqlite3 libaprutil1-ldap libcurl4 liblua5.3-0 ssl-cert
+0 upgraded, 11 newly installed, 0 to remove and 0 not upgraded.
+Need to get 2,786 kB of archives.
+After this operation, 9,122 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+
+Execução do serviço Apache
+Assim que o comando acima for concluído, o Apache deve agora ser instalado em seu servidor Debian 11.
+
+Quando instalado, ele é iniciado automaticamente;
+
+#systemctl status apache2
+
+● apache2.service - The Apache HTTP Server
+     Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+     Active: active (running) since Fri 2021-08-20 08:20:05 EAT; 14s ago
+       Docs: https://httpd.apache.org/docs/2.4/
+   Main PID: 1441 (apache2)
+      Tasks: 55 (limit: 1133)
+     Memory: 9.0M
+        CPU: 38ms
+     CGroup: /system.slice/apache2.service
+             ├─1441 /usr/sbin/apache2 -k start
+             ├─1443 /usr/sbin/apache2 -k start
+             └─1444 /usr/sbin/apache2 -k start
+
+Aug 20 08:20:05 debian11 systemd[1]: Starting The Apache HTTP Server...
+Aug 20 08:20:05 debian11 apachectl[1440]: AH00557: apache2: apr_sockaddr_info_get() failed for debian11
+Aug 20 08:20:05 debian11 apachectl[1440]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 127.0.0.1. Set the 'ServerName' di>
+Aug 20 08:20:05 debian11 systemd[1]: Started The Apache HTTP Server.
+Além disso, ele pode ser executado na inicialização do sistema;
+
+#systemctl is-enabled apache2
+Saída de amostra;
+
+enabled
+Se por algum motivo não for iniciado nem habilitado para execução na inicialização, basta executar o comando abaixo para iniciar e habilitá-lo para execução na inicialização do sistema;
+
+#systemctl enable --now apache2
+Você pode reiniciar ou recarregar o serviço Apache2 executando os comandos abaixo, respectivamente;
+
+#systemctl restart apache2
+#systemctl reload apache2
+
+Você pode acessar as páginas da web do Apache por meio do endereço http://localhost
+ Por padrão, você será servido com uma página da web padrão do Apache.
+
+pronto terminamos a instalação do apavhe2 no debiam 11!
+
+
+
+
+
+

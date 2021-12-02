@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load humanize %}
+
+
+{% block titulo %} Busca {% endblock %}
+
+<!-- CONTENT -->
+{% block content %}
+
+<!--================Blog Area =================-->
+<section class="blog_area section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                
+                                
+                <div class="blog_left_sidebar">
+                                            
+                    {% for post in posts %}
+
+                    <article class="blog_item">
+                        <div class="blog_item_img">
+                            <img class="card-img rounded-0" src="{{ post.imagem_post.url }}" alt="">
+                            <a href="#" class="blog_item_date">
+                            
+                                    {{ post.data_post|naturalday|title }}<!--usa o metodo humanize referenciado no instal apps para formatar a data-->
+                          
+                            </a>
+                        </div>
+
+                        <div class="blog_details">
+                            <a class="d-inline-block" href="{% url 'post_detalhes' post.id %}">
+                                <h2>{{ post.titulo_post }}</h2>
+                            </a>
+                            <p>{{ post.exerto_post }}</p>
+                            <ul class="blog-info-link">
+                                <li><a href="#"><i class="fa fa-user"></i> Autor: {{ post.autor_post }}</a></li>
+                                <li><a href="#"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>Categoria: {{ post.categoria_post }}</a></li>
+                                
+                                <li><a href="#"><i class="fa fa-comments"></i> {{ post.numero_comentarios }} Comentário(s)</a></li>
+                            </ul>
+                        </div>
+                    </article>
+                    {% endfor %}
+
+                   <!--================inserindo paginação =================-->
+                         {% include 'parciais/_pagination.html' %}
+                </div>
+
+            </div>
+            
+          <!--================inserindo barra lateral =================-->
+                    {% include 'parciais/_lateral.html' %} 
+        </div>
+    </div>
+</section>
+<!--================Blog Area =================-->
+
+
+<!--/CONTENT-->
+{% endblock %}

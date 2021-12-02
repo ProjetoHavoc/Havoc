@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load humanize %}
+
+
+{% block content %}
+
+
+  <!--================Blog Area =================-->
+  <section class="blog_area single-post-area section-padding">
+    <div class="container">
+       <div class="row">
+          <div class="col-lg-8 posts-list">
+             <div class="single-post">
+                <div class="feature-img">
+                   <img class="img-fluid" src="assets/img/blog/single_blog_1.png" alt="">
+                </div>
+                <div class="blog_details">
+                <!-- Article main content -->
+                <article class="col-md-8 maincontent">
+                    
+                    <header class="page-header">
+                        <h2>{{ post.titulo_post }}</h2>
+                        <h5>{{ post.excerto_post }}</h5>
+                    </header>
+                
+                    <h2>{{ post.titulo_post }}</h2>
+                    <h5>{{ post.excerto_post }}</h5>
+                    <p class="text-muted mt-4">
+                        <small>
+                            {{ post.autor_post }} | {{ post.data_post }} | {{ post.categoria_post }}
+                        </small>
+                
+                        {{ post.conteudo_post|safe }}
+                
+                    </p>
+                
+                
+                    {% if comentarios %}
+                
+                    <h2 class="my-3">Comentários ({{ comentarios.count }})</h2>
+                
+                    {% for comentario in comentarios %}
+                
+                    <h5 class="mb-2 mt-5">{{ comentario.nome_comentario }} disse:</h5>
+                    <small class="text-muted">{{ comentario.data_comentario }}</small>
+                    <p class="mb-1">{{ comentario.comentario }}</p>
+                
+                    {% endfor %}
+                
+                
+                    <h2 class="my-3">Deixe um comentário</h2>
+                
+                    <form method="POST" action="#envia_comentario">
+                
+                        {% csrf_token %}
+                
+                        <table class="table">
+                
+                            {{ form|crispy }}
+                
+                            <tr>
+                                <td colspan="2">
+                
+                                    <div class="g-recaptcha" data-sitekey="6LdmuVgdAAAAAI_QTfwi8llmTA7C4O0ShEmkhpez"></div>
+                                    <br />
+                
+                                    {% include 'parciais/_messages.html' %}
+                                    <input id="envia_comentario" type="submit" class="btn btn-primary" value="Enviar">
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                
+                    {% endif %}
+                
+                </article>
+                <!-- /Article -->
+
+
+                </div>
+             </div>
+          </div>
+          
+          {% include 'parciais/_lateral.html' %}
+
+       </div>
+    </div>
+ </section>
+
+
+
+ {% endblock %}
+ <!--================ Blog Area end =================-->

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load humanize %}
+
+
+<!-- Conteudo -->
+
+{% block content %}
+
+<main>
+    <!--? slider Area Start-->
+    <!--================lugar do carrolssel =================-->
+    <!-- slider Area End-->  
+     
+ 
+</main>
+
+ <!--================Blog Area =================-->
+   <section class="blog_area section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                
+                {% if user.is_authenticated %}
+      
+                <div class="header-right-btn d-none d-lg-block ml-20">
+                    <a href="{% url 'novo-post' %}" class="sc-add-to-cart btn btn-primary">Novo Post</a>
+                 </div>
+                 <p></p>
+            
+                {% endif %}
+                                 
+                <div class="blog_left_sidebar">
+                                            
+                    {% for post in posts %}
+
+                    <article class="blog_item">
+
+                        <a class="d-inline-block" href="{% url 'post_detalhes' post.id %}">
+                            <h2>{{ post.titulo_post }}</h2>
+                        </a>
+                        
+                        
+
+                            <a href="{% url 'post_detalhes' post.id %}"><img class="card-img rounded-0" src="{{ post.imagem_post.url }}" alt=""></a>
+                            
+                            <a href="{% url 'post_detalhes' post.id %}">
+                            
+                                    {{ post.data_post|naturalday|title }}<!--usa o metodo humanize referenciado no instal apps para formatar a data-->
+                            </a>
+                   
+
+                        
+                            <a class="d-inline-block" href="{% url 'post_detalhes' post.id %}">
+                                <h2>{{ post.excerto_post }}</h2>
+                            </a>
+                            
+                            <ul class="blog-info-link">
+                                <li><i class="fa fa-user"></i> Autor: {{ post.autor_post }}</a></li>
+                                <li><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>Categoria: {{ post.categoria_post }}</a></li>
+                                
+                                <li><i class="fa fa-comments"></i> {{ post.numero_comentarios }} Comentário(s)</a></li>
+                            </ul>
+                      
+                    </article>
+                    {% endfor %}
+
+              <!--================inserindo paginação =================-->
+                    {% include 'parciais/_pagination.html' %}
+                    
+                </div>
+
+            </div>
+            <!--================inserindo barra lateral =================-->
+                
+        </div>
+    </div>
+</section>
+<!--================Blog Area =================-->
+
+
+
+
+{% endblock %}
+
+
+
+<!--/Conteudo-->
+
+
+ 
+
+            
